@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+
 class Course(models.Model):
     code = models.CharField(max_length=20, unique=True)
     title = models.CharField(max_length=200)
@@ -16,9 +17,14 @@ class Course(models.Model):
 
     class Meta:
         ordering = ["code"]
+        # Tambahkan index berikut sesuai petunjuk Guided Lab E (Halaman 14 Modul)
+        indexes = [
+            models.Index(fields=["is_active", "title"]),
+        ]
 
     def __str__(self):
         return f"{self.code} - {self.title}"
+
 
 class Lesson(models.Model):
     course = models.ForeignKey(
@@ -41,6 +47,7 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f"{self.course.code} - {self.title}"
+
 
 class Enrollment(models.Model):
     student = models.ForeignKey(
@@ -66,6 +73,7 @@ class Enrollment(models.Model):
 
     def __str__(self):
         return f"{self.student.username} -> {self.course.code}"
+
 
 class Assignment(models.Model):
     course = models.ForeignKey(
